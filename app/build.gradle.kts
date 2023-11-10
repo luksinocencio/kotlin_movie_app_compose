@@ -1,9 +1,16 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
 }
+
+val apiKeyPropertiesFile = rootProject.file("apiKey.properties")
+val apiKeyProperties = Properties()
+apiKeyProperties.load(FileInputStream(apiKeyPropertiesFile))
 
 android {
     namespace = "br.com.devmeist3r"
@@ -17,12 +24,18 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", apiKeyProperties["API_KEY"] as String)
+        buildConfigField("String", "BASE_URL", apiKeyProperties["BASE_URL"] as String)
+        buildConfigField("String", "BASE_URL_IMAGE", apiKeyProperties["BASE_URL_IMAGE"] as String)
+
         vectorDrawables {
             useSupportLibrary = true
         }
     }
 
     buildTypes {
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -40,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.2"
