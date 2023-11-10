@@ -93,6 +93,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     // Others - Compose dependencies
+    implementation("androidx.compose.material:material:1.3.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
     implementation("com.google.accompanist:accompanist-flowlayout:0.17.0")
