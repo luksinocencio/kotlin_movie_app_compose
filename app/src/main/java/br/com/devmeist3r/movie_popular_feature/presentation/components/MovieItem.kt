@@ -54,7 +54,8 @@ fun MovieItem(
                         .data(imageUrl)
                         .crossfade(true)
                         .error(R.drawable.ic_error_image)
-                        .placeholder(R.drawable.ic_placeholder),
+                        .placeholder(R.drawable.ic_placeholder)
+                        .build(),
                     contentDescription = "",
                     contentScale = ContentScale.FillHeight,
                     modifier = Modifier
