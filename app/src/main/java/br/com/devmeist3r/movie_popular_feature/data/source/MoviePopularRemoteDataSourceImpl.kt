@@ -4,10 +4,11 @@ import br.com.devmeist3r.core.data.remote.MovieService
 import br.com.devmeist3r.core.data.remote.response.MovieResponse
 import br.com.devmeist3r.core.paging.MoviePagingSource
 import br.com.devmeist3r.movie_popular_feature.domain.source.MoviePopularRemoteDataSource
+import javax.inject.Inject
 
-class MoviePopularRemoteDataSourceImpl constructor(
+class MoviePopularRemoteDataSourceImpl @Inject constructor(
     private val service: MovieService
-): MoviePopularRemoteDataSource {
+) : MoviePopularRemoteDataSource {
     override fun getPopularMoviesPagingSource(): MoviePagingSource {
         return MoviePagingSource(this)
     }
