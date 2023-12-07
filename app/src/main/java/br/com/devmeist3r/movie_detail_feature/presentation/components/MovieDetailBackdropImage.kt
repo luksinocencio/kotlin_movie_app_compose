@@ -28,7 +28,7 @@ fun MovieDetailBackdropImage(
                 .build(),
             contentDescription = "",
             contentScale = ContentScale.Crop,
-            modifier = modifier
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
