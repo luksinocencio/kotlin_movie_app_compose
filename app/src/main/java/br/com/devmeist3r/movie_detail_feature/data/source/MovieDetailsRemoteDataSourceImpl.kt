@@ -21,7 +21,7 @@ class MovieDetailsRemoteDataSourceImpl @Inject constructor(
             genres = genres,
             releaseDate = response.releaseDate,
             backdropPathUrl = response.backdropPath.toBackdropUrl(),
-            voteAvarage = response.voteAverage,
+            voteAverage = response.voteAverage,
             duration = response.runtime,
             voteCount = response.voteCount
         )

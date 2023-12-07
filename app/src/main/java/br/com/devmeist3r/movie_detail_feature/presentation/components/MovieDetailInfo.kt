@@ -29,7 +29,7 @@ fun MovieDetailInfoContent(
     ) {
         MovieDetailInfo(
             name = stringResource(id = R.string.vote_average),
-            value = movieDetails?.voteAvarage.toString()
+            value = movieDetails?.voteAverage.toString()
         )
 
         MovieDetailInfo(
@@ -82,7 +82,7 @@ fun MovieDetailInfoContentPreview() {
             overview = null,
             backdropPathUrl = null,
             releaseDate = null,
-            voteAvarage = 7.5,
+            voteAverage = 7.5,
             duration = 90,
             voteCount = 100
         ),
