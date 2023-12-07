@@ -28,5 +28,5 @@ interface MovieService {
     suspend fun getMoviesSimilar(
         @Path("movie_id") movieId: Int,
         @Query("page") page: Int
-    ): MovieDetailResponse
+    ): MovieResponse
 }
