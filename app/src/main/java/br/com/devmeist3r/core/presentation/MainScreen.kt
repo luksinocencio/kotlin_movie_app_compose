@@ -19,7 +19,7 @@ fun MainScreen(navController: NavHostController) {
         },
         content = { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues)) {
-                NavigationGraph(navController = navController)
+                NavigationGraph(navHostController = navController)
             }
         }
     )

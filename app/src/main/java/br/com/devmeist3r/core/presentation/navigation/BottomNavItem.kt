@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
+import br.com.devmeist3r.core.util.Constants.MOVIE_DETAIL_ARGUMENT_KEY
 
 sealed class BottomNavItem(
     val title: String,
@@ -28,4 +29,12 @@ sealed class BottomNavItem(
         icon = Icons.Default.Favorite,
         route = "movie_favorite_screen"
     )
+
+    object MovieDetail: BottomNavItem (
+        title = "Detalhes",
+        icon = Icons.Default.Favorite,
+        route = "movie_detail_destination?$MOVIE_DETAIL_ARGUMENT_KEY={$MOVIE_DETAIL_ARGUMENT_KEY}"
+    ) {
+        fun passMovieId(movieId: Int) = "movie_detail_destination?$MOVIE_DETAIL_ARGUMENT_KEY=$movieId"
+    }
 }

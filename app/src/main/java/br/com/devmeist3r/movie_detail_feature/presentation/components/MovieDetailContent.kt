@@ -145,7 +145,7 @@ fun MovieDetailsContent(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding()
+                    .padding(horizontal = 8.dp)
                     .align(Alignment.TopCenter)
             )
         }
@@ -161,7 +161,7 @@ fun MovieDetailsContent(
             pagingMoviesSimilar = pagingMoviesSimilar,
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
+                .fillMaxHeight(0.35f)
                 .align(Alignment.BottomEnd)
         )
     }
