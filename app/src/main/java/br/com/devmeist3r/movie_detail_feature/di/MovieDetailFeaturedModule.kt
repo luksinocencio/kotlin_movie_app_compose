@@ -33,4 +33,5 @@ object MovieDetailFeaturedModule {
     fun provideGetMovieDetailsUseCase(repository: MovieDetailsRepository): GetMovieDetailsUseCase {
         return GetMovieDetailsUseCaseImpl(repository = repository)
     }
+
 }
