@@ -47,7 +47,7 @@ import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun MovieDetailsContent(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     movieDetails: MovieDetails?,
     pagingMoviesSimilar: LazyPagingItems<Movie>,
     isLoading: Boolean,
