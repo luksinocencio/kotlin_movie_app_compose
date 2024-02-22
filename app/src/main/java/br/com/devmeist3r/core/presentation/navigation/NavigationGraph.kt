@@ -33,7 +33,7 @@ fun NavigationGraph(navHostController: NavHostController) {
             MoviePopularScreen(
                 uiState = uiState,
                 navigateToDetailMovie = {
-                    navHostController.navigate(BottomNavItem.MovieDetail.passMovieId(movieId = it))
+                    navHostController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
                 }
             )
         }
@@ -51,7 +51,7 @@ fun NavigationGraph(navHostController: NavHostController) {
                 onEvent = onEvent,
                 onFetch = onFetch,
                 navigateToDetailMovie = {
-                    navHostController.navigate(BottomNavItem.MovieDetail.passMovieId(movieId = it))
+                    navHostController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
                 }
             )
         }
@@ -65,13 +65,13 @@ fun NavigationGraph(navHostController: NavHostController) {
             MovieFavoriteScreen(
                 uiState = uiState,
                 navigateToDetailMovie = {
-                    navHostController.navigate(BottomNavItem.MovieDetail.passMovieId(movieId = it))
+                    navHostController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
                 }
             )
         }
 
         composable(
-            route = BottomNavItem.MovieDetail.route,
+            route = DetailScreenNav.DetailScreen.route,
             arguments = listOf(
                 navArgument(Constants.MOVIE_DETAIL_ARGUMENT_KEY) {
                     type = NavType.IntType
