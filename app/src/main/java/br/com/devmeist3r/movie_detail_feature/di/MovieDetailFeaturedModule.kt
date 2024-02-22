@@ -16,22 +16,21 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object MovieDetailFeaturedModule {
-    @Provides
-    @Singleton
-    fun provideMovieDetailsDataSource(service: MovieService): MovieDetailsRemoteDataSource {
-        return MovieDetailsRemoteDataSourceImpl(service = service)
-    }
+  @Provides
+  @Singleton
+  fun provideMovieDetailsDataSource(service: MovieService): MovieDetailsRemoteDataSource {
+    return MovieDetailsRemoteDataSourceImpl(service = service)
+  }
 
-    @Provides
-    @Singleton
-    fun provideMovieDetailsRepository(remoteDataSource: MovieDetailsRemoteDataSource): MovieDetailsRepository {
-        return MovieDetailsRepositoryImpl(remoteDataSource = remoteDataSource)
-    }
+  @Provides
+  @Singleton
+  fun provideMovieDetailsRepository(remoteDataSource: MovieDetailsRemoteDataSource): MovieDetailsRepository {
+    return MovieDetailsRepositoryImpl(remoteDataSource = remoteDataSource)
+  }
 
-    @Provides
-    @Singleton
-    fun provideGetMovieDetailsUseCase(repository: MovieDetailsRepository): GetMovieDetailsUseCase {
-        return GetMovieDetailsUseCaseImpl(repository = repository)
-    }
-
+  @Provides
+  @Singleton
+  fun provideGetMovieDetailsUseCase(repository: MovieDetailsRepository): GetMovieDetailsUseCase {
+    return GetMovieDetailsUseCaseImpl(repository = repository)
+  }
 }

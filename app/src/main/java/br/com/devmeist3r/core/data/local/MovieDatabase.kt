@@ -6,10 +6,10 @@ import br.com.devmeist3r.core.data.local.dao.MovieDao
 import br.com.devmeist3r.core.data.local.entity.MovieEntity
 
 @Database(
-    entities = [MovieEntity::class],
-    version = 1,
-    exportSchema = false
+  entities = [MovieEntity::class],
+  version = 1,
+  exportSchema = false
 )
-abstract class MovieDatabase: RoomDatabase() {
-    abstract fun movieDao(): MovieDao
+abstract class MovieDatabase : RoomDatabase() {
+  abstract fun movieDao(): MovieDao
 }

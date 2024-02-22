@@ -128,4 +128,28 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.0")
     implementation("androidx.room:room-runtime:2.6.0")
     kapt ("androidx.room:room-compiler:2.6.0")
+
+    testImplementation("junit:junit:4.13.2")
+
+  //truth
+
+  implementation("com.google.truth:truth:1.1.3")
+  androidTestImplementation("com.google.dagger:hilt-android-testing:2.45")
+  kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.45")
+  androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+  androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+  androidTestImplementation("com.google.truth:truth:1.1.3")
+
+  // Dependência principal do Mockito
+  testImplementation ("org.mockito:mockito-core:2.28.2")
+  // Dependência do Mockito para testes no Android
+  androidTestImplementation("org.mockito:mockito-android:2.28.2")
+
+  // Dependência do Mockito para ser possível mockar classes e métodos constantes
+  testImplementation("org.mockito:mockito-inline:2.28.2")
+  androidTestImplementation("androidx.test.ext:junit:1.1.5")
+  androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+  androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.6.2")
+  debugImplementation("androidx.compose.ui:ui-tooling:1.6.2")
+  debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.2")
 }
