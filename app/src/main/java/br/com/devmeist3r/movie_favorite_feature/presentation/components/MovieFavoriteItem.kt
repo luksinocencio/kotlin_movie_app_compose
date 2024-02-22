@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.devmeist3r.R
 import br.com.devmeist3r.core.domain.model.Movie
+import br.com.devmeist3r.core.presentation.components.common.AsyncImageUrl
 import br.com.devmeist3r.ui.theme.black
 import br.com.devmeist3r.ui.theme.white
 import coil.compose.AsyncImage
@@ -49,16 +51,12 @@ fun MovieFavoriteItem(
                     .fillMaxWidth()
                     .height(200.dp)
             ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(movie.imageUrl)
-                        .crossfade(true)
-                        .error(R.drawable.ic_error_image)
-                        .placeholder(R.drawable.ic_placeholder)
-                        .build(),
-                    contentDescription = "",
+                AsyncImageUrl(
+                    imageUrl = movie.imageUrl,
                     contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
                 )
             }
 
