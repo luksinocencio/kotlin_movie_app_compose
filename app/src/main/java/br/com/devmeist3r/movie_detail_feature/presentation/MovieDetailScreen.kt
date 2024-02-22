@@ -17,20 +17,10 @@ import br.com.devmeist3r.ui.theme.white
 
 @Composable
 fun MovieDetailScreen(
-    id: Int?,
     uiState: MovieDetailState,
-    onAddFavorite: (Movie) -> Unit,
-    checkedFavorite: (MovieDetailEvent.CheckedFavorite) -> Unit,
-    getMovieDetail: (MovieDetailEvent.GetMovieDetail) -> Unit
+    onAddFavorite: (Movie) -> Unit
 ) {
     val pagingMoviesSimilar = uiState.results.collectAsLazyPagingItems()
-
-    LaunchedEffect(key1 = true) {
-        if (id != null) {
-            getMovieDetail(MovieDetailEvent.GetMovieDetail(id))
-            checkedFavorite(MovieDetailEvent.CheckedFavorite(id))
-        }
-    }
 
     Scaffold (
         topBar = {
