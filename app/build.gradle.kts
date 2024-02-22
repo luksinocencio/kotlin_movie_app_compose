@@ -23,7 +23,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "br.com.devmeist3r.HiltTestRunner"
 
         buildConfigField("String", "API_KEY", apiKeyProperties["API_KEY"] as String)
         buildConfigField("String", "BASE_URL", apiKeyProperties["BASE_URL"] as String)
