@@ -93,4 +93,23 @@ class MovieDaoTest {
     // Then
     assertThat(movieId?.title).isEqualTo(movieClick.title)
   }
+
+  @Test
+  fun test_insertMovies_should_insert_movies_successfully() = runTest {
+    // Given
+    val moviesEntities = listOf(
+      MovieEntity(movieId = 1, title = "Homem de ferro 1", imageUrl = "any_url_1"),
+      MovieEntity(movieId = 2, title = "Homem de ferro 2", imageUrl = "any_url_2"),
+      MovieEntity(movieId = 3, title = "Homem de ferro 3", imageUrl = "any_url_3"),
+      MovieEntity(movieId = 4, title = "Homem de ferro 4", imageUrl = "any_url_4"),
+    )
+
+    // When
+    movieDao.insertMovies(moviesEntities)
+
+    // Then
+    val insertedMovies = movieDao.getMovies().first()
+    assertThat(moviesEntities.size).isEqualTo(insertedMovies.size)
+    assertThat(insertedMovies.containsAll(moviesEntities))
+  }
 }
