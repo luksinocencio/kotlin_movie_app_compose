@@ -151,4 +151,36 @@ class MovieDaoTest {
     // Then
     assertThat(result).isNull()
   }
+
+  @Test
+  fun test_updateMovie_should_update_a_movie_successfully() = runTest {
+    // Given
+    val movieEntity = MovieEntity(movieId = 1, title = "Homem de ferro", imageUrl = "any_url")
+    movieDao.insertMovie(movieEntity)
+
+    val allMovies = movieDao.getMovies().first()
+    val updateMovie = allMovies[0].copy(title = "Homem Aranha")
+
+    // When
+    movieDao.insertMovie(updateMovie)
+
+    // Then
+    val movies = movieDao.getMovies().first()
+    assertThat(movies[0].title).contains(updateMovie.title)
+  }
+
+  @Test
+  fun test_deleteMovie_should_delete_a_movie_successfully() = runTest {
+    // Given
+    val movieEntity = MovieEntity(movieId = 1, title = "Homem de ferro", imageUrl = "any_url")
+    movieDao.insertMovie(movieEntity)
+    val allMovies = movieDao.getMovies().first()
+
+    // When
+    movieDao.deleteMovie(movieEntity)
+
+    // Then
+    val movies = movieDao.getMovies().first()
+    assertThat(movies).isEmpty()
+  }
 }
