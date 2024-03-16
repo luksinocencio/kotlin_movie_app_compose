@@ -70,7 +70,7 @@ dependencies {
   implementation("androidx.compose.ui:ui-graphics")
   implementation("androidx.compose.ui:ui-tooling-preview")
   implementation("androidx.compose.material3:material3")
-  testImplementation("junit:junit:4.13.2")
+
   androidTestImplementation("androidx.test.ext:junit:1.1.5")
   androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
   androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
@@ -135,22 +135,32 @@ dependencies {
   //truth
 
   implementation("com.google.truth:truth:1.4.0")
-  androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
+
+  //Javax Inject
+  implementation("javax.inject:javax.inject:1")
+
+  //Hilt
   kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
+  androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
+
+  // Unit tests
+  testImplementation("junit:junit:4.13.2")
+  testImplementation("androidx.arch.core:core-testing:2.2.0")
+  /**/testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+  /**/testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+  testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+  testImplementation("org.mockito:mockito-inline:2.28.2")
+  testImplementation("androidx.room:room-testing:2.5.2")
+
+  // Instrumentation tests
   androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
   androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
-  androidTestImplementation("com.google.truth:truth:1.4.0")
-
-  // Dependência principal do Mockito
-  testImplementation("org.mockito:mockito-core:2.28.2")
-  // Dependência do Mockito para testes no Android
-  androidTestImplementation("org.mockito:mockito-android:2.28.2")
-
-  // Dependência do Mockito para ser possível mockar classes e métodos constantes
-  testImplementation("org.mockito:mockito-inline:2.28.2")
+  androidTestImplementation("com.google.truth:truth:1.1.3")
   androidTestImplementation("androidx.test.ext:junit:1.1.5")
   androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-  androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.2")
-  debugImplementation("androidx.compose.ui:ui-tooling:1.6.2")
-  debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.2")
+
+  androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.3")
+  debugImplementation("androidx.compose.ui:ui-tooling:1.6.3")
+  debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.3")
 }
