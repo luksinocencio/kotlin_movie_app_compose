@@ -140,6 +140,7 @@ dependencies {
 
   //Hilt
   kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
+
   androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
 
   // Unit tests
@@ -149,7 +150,7 @@ dependencies {
   /**/testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
   testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
-  testImplementation("org.mockito:mockito-inline:2.28.2")
+  testImplementation("org.mockito:mockito-inline:5.2.0")
   testImplementation("androidx.room:room-testing:2.6.1")
 
   // Instrumentation tests
