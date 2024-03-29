@@ -70,6 +70,7 @@ dependencies {
   implementation("androidx.compose.ui:ui-graphics")
   implementation("androidx.compose.ui:ui-tooling-preview")
   implementation("androidx.compose.material3:material3")
+  implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0")
 
   androidTestImplementation("androidx.test.ext:junit:1.1.5")
   androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -152,6 +153,7 @@ dependencies {
   testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
   testImplementation("org.mockito:mockito-inline:5.2.0")
   testImplementation("androidx.room:room-testing:2.6.1")
+  testImplementation("androidx.paging:paging-common:3.2.1")
 
   // Instrumentation tests
   androidTestImplementation("androidx.arch.core:core-testing:2.2.0")

@@ -2,6 +2,7 @@ package br.com.devmeist3r.core.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -20,73 +21,74 @@ import br.com.devmeist3r.search_movie_feature.presentation.MovieSearchViewModel
 
 @Composable
 fun NavigationGraph(navHostController: NavHostController) {
-    NavHost(
-        navController = navHostController,
-        startDestination = BottomNavItem.MoviePopular.route
+  NavHost(
+    navController = navHostController,
+    startDestination = BottomNavItem.MoviePopular.route
+  ) {
+    composable(
+      BottomNavItem.MoviePopular.route
     ) {
-        composable(
-            BottomNavItem.MoviePopular.route
-        ) {
-            val viewModel: MoviePopularViewModel = hiltViewModel()
-            val uiState = viewModel.uiState
+      val viewModel: MoviePopularViewModel = hiltViewModel()
+      val uiState = viewModel.uiState
 
-            MoviePopularScreen(
-                uiState = uiState,
-                navigateToDetailMovie = {
-                    navHostController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
-                }
-            )
+      MoviePopularScreen(
+        uiState = uiState,
+        navigateToDetailMovie = {
+          navHostController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
         }
-
-        composable(
-            BottomNavItem.MovieSearch.route
-        ) {
-            val viewModel: MovieSearchViewModel = hiltViewModel()
-            val uiState = viewModel.uiState
-            val onEvent: (MovieSearchEvent) -> Unit = viewModel::event
-            val onFetch: (String) -> Unit = viewModel::fetch
-
-            MovieSearchScreen(
-                uiState = uiState,
-                onEvent = onEvent,
-                onFetch = onFetch,
-                navigateToDetailMovie = {
-                    navHostController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
-                }
-            )
-        }
-
-        composable(
-            BottomNavItem.MovieFavorites.route
-        ) {
-            val viewModel: MovieFavoriteViewModel = hiltViewModel()
-            val uiState = viewModel.uiState
-
-            MovieFavoriteScreen(
-                uiState = uiState,
-                navigateToDetailMovie = {
-                    navHostController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
-                }
-            )
-        }
-
-        composable(
-            route = DetailScreenNav.DetailScreen.route,
-            arguments = listOf(
-                navArgument(Constants.MOVIE_DETAIL_ARGUMENT_KEY) {
-                    type = NavType.IntType
-                    defaultValue = 0
-                }
-            )
-        ) {
-            val viewModel: MovieDetailViewModel = hiltViewModel()
-            val uiState = viewModel.uiState
-            val onAddFavorite = viewModel::onAddFavorite
-
-            MovieDetailScreen(
-                uiState = uiState,
-                onAddFavorite = onAddFavorite
-            )
-        }
+      )
     }
+
+    composable(
+      BottomNavItem.MovieSearch.route
+    ) {
+      val viewModel: MovieSearchViewModel = hiltViewModel()
+      val uiState = viewModel.uiState
+      val onEvent: (MovieSearchEvent) -> Unit = viewModel::event
+      val onFetch: (String) -> Unit = viewModel::fetch
+
+      MovieSearchScreen(
+        uiState = uiState,
+        onEvent = onEvent,
+        onFetch = onFetch,
+        navigateToDetailMovie = {
+          navHostController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
+        }
+      )
+    }
+
+    composable(
+      BottomNavItem.MovieFavorites.route
+    ) {
+      val viewModel: MovieFavoriteViewModel = hiltViewModel()
+      val uiState = viewModel.uiState.movies
+        .collectAsStateWithLifecycle(initialValue = emptyList())
+
+      MovieFavoriteScreen(
+        movies = uiState.value,
+        navigateToDetailMovie = {
+          navHostController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
+        }
+      )
+    }
+
+    composable(
+      route = DetailScreenNav.DetailScreen.route,
+      arguments = listOf(
+        navArgument(Constants.MOVIE_DETAIL_ARGUMENT_KEY) {
+          type = NavType.IntType
+          defaultValue = 0
+        }
+      )
+    ) {
+      val viewModel: MovieDetailViewModel = hiltViewModel()
+      val uiState = viewModel.uiState
+      val onAddFavorite = viewModel::onAddFavorite
+
+      MovieDetailScreen(
+        uiState = uiState,
+        onAddFavorite = onAddFavorite
+      )
+    }
+  }
 }
