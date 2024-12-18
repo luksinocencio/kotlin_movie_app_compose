@@ -1,5 +1,6 @@
 package br.com.devmeist3r.movie_detail_feature.presentation
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagingData
 import br.com.devmeist3r.TestDispatcherRule
@@ -47,7 +48,9 @@ class MovieDetailViewModelTest {
   @Mock
   lateinit var savedStateHandle: SavedStateHandle
 
-  private val movieDetailsFactory = MovieDetailsFactory().create(poster = MovieDetailsFactory.Poster.Avengers)
+  private val movieDetailsFactory = MovieDetailsFactory().create(
+    poster = MovieDetailsFactory.Poster.Avengers
+  )
 
   private val pagingData = PagingData.from(
     listOf(
@@ -84,10 +87,50 @@ class MovieDetailViewModelTest {
     // Then
     verify(getMovieDetailsUseCase).invoke(argumentCaptor.capture())
     assertThat(movieDetailsFactory.id).isEqualTo(argumentCaptor.firstValue.movieId)
-
     val movieDetails = viewModel.uiState.movieDetails
     val results = viewModel.uiState.results
     assertThat(movieDetails).isNotNull()
     assertThat(results).isNotNull()
+  }
+
+  @Test
+  fun `must notify uiState with Failure when get movies details and returns exception`() = runTest {
+    // Given
+    val exception = Exception("Um erro ocorreu!")
+    whenever(getMovieDetailsUseCase.invoke(any()))
+      .thenReturn(flowOf(ResultData.Failure(exception)))
+
+    // When
+    viewModel.uiState.isLoading
+
+    // Then
+    val error = viewModel.uiState.error
+    assertThat(exception.message).isEqualTo(error)
+  }
+
+  @Test
+  fun `must call delete favorite and notify of uiState with filled favorite icon when current icon is checked`() = runTest {
+    // Given
+    whenever(deleteMovieDetailsUseCase.invoke(any()))
+      .thenReturn(flowOf(ResultData.Success(Unit)))
+
+    whenever(isFavoriteMovieUseCase.invoke(any()))
+      .thenReturn(flowOf(ResultData.Success(true)))
+
+    val deleteArgumentCaptor = argumentCaptor<DeleteMovieFavoriteUseCase.Params>()
+    val checkedArgumentCaptor = argumentCaptor<IsMovieFavoriteUseCase.Params>()
+
+    // When
+    viewModel.onAddFavorite(movie = movie)
+
+    // Then
+    verify(deleteMovieDetailsUseCase).invoke(deleteArgumentCaptor.capture())
+    assertThat(movie).isEqualTo(deleteArgumentCaptor.firstValue.movie)
+
+    verify(isFavoriteMovieUseCase).invoke(checkedArgumentCaptor.capture())
+    assertThat(movie.id).isEqualTo(checkedArgumentCaptor.firstValue.movieId)
+
+    val iconColor = viewModel.uiState.iconColor
+    assertThat(Color.White).isEqualTo(iconColor)
   }
 }

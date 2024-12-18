@@ -24,154 +24,154 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
-    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
-    private val addMovieFavoriteUseCase: AddMovieFavoriteUseCase,
-    private val deleteMovieFavoriteUseCase: DeleteMovieFavoriteUseCase,
-    private val isMovieFavoriteUseCase: IsMovieFavoriteUseCase,
-    savedStateHandle: SavedStateHandle
+  private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+  private val addMovieFavoriteUseCase: AddMovieFavoriteUseCase,
+  private val deleteMovieFavoriteUseCase: DeleteMovieFavoriteUseCase,
+  private val isMovieFavoriteUseCase: IsMovieFavoriteUseCase,
+  savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    var uiState by mutableStateOf(MovieDetailState())
-        private set
+  var uiState by mutableStateOf(MovieDetailState())
+    private set
 
-    private val movieId = savedStateHandle.get<Int>(key = Constants.MOVIE_DETAIL_ARGUMENT_KEY)
+  private val movieId = savedStateHandle.get<Int>(key = Constants.MOVIE_DETAIL_ARGUMENT_KEY)
 
-    init {
-        movieId?.let { safeMovieId ->
-            checkedFavorite(MovieDetailEvent.CheckedFavorite(safeMovieId))
-            getMovieDetail(MovieDetailEvent.GetMovieDetail(safeMovieId))
+  init {
+    movieId?.let { safeMovieId ->
+      checkedFavorite(MovieDetailEvent.CheckedFavorite(safeMovieId))
+//      getMovieDetail(MovieDetailEvent.GetMovieDetail(safeMovieId))
+    }
+  }
+
+  private fun getMovieDetail(getMovieDetail: MovieDetailEvent.GetMovieDetail) {
+    event(getMovieDetail)
+  }
+
+  private fun checkedFavorite(checkedFavorite: MovieDetailEvent.CheckedFavorite) {
+    event(checkedFavorite)
+  }
+
+  fun onAddFavorite(movie: Movie) {
+    if (uiState.iconColor == Color.White) {
+      event(MovieDetailEvent.AddFavorite(movie = movie))
+    } else {
+      event(MovieDetailEvent.RemoveFavorite(movie = movie))
+    }
+  }
+
+  private fun event(event: MovieDetailEvent) {
+    when (event) {
+      is MovieDetailEvent.AddFavorite -> {
+        viewModelScope.launch {
+          addMovieFavoriteUseCase.invoke(
+            params = AddMovieFavoriteUseCase.Params(
+              movie = event.movie
+            )
+          ).collectLatest { result ->
+            when (result) {
+              is ResultData.Success -> {
+                uiState = uiState.copy(iconColor = Color.Red)
+              }
+
+              is ResultData.Failure -> {
+                UtilFunctions.logError("DETAIL", "Erro ao cadastrar filme")
+              }
+
+              is ResultData.Loading -> {
+
+              }
+            }
+          }
         }
-    }
+      }
 
-    private fun getMovieDetail(getMovieDetail: MovieDetailEvent.GetMovieDetail) {
-        event(getMovieDetail)
-    }
+      is MovieDetailEvent.CheckedFavorite -> {
+        viewModelScope.launch {
+          isMovieFavoriteUseCase.invoke(
+            params = IsMovieFavoriteUseCase.Params(
+              movieId = event.movieId
+            )
+          ).collectLatest { result ->
+            when (result) {
+              is ResultData.Success -> {
+                uiState = if (result.data == true) {
+                  uiState.copy(iconColor = Color.Red)
+                } else {
+                  uiState.copy(iconColor = Color.White)
+                }
+              }
 
-    private fun checkedFavorite(checkedFavorite: MovieDetailEvent.CheckedFavorite) {
-        event(checkedFavorite)
-    }
+              is ResultData.Failure -> {
+                UtilFunctions.logError("DETAIL", "Um erro ocorreu!")
+              }
 
-    fun onAddFavorite(movie: Movie) {
-        if (uiState.iconColor == Color.White) {
-            event(MovieDetailEvent.AddFavorite(movie = movie))
-        } else {
-            event(MovieDetailEvent.RemoveFavorite(movie = movie))
+              is ResultData.Loading -> {
+
+              }
+            }
+          }
         }
-    }
+      }
 
-    private fun event(event: MovieDetailEvent) {
-        when (event) {
-            is MovieDetailEvent.AddFavorite -> {
-                viewModelScope.launch {
-                    addMovieFavoriteUseCase.invoke(
-                        params = AddMovieFavoriteUseCase.Params(
-                            movie = event.movie
-                        )
-                    ).collectLatest { result ->
-                        when (result) {
-                            is ResultData.Success -> {
-                                uiState = uiState.copy(iconColor = Color.Red)
-                            }
+      is MovieDetailEvent.RemoveFavorite -> {
+        viewModelScope.launch {
+          deleteMovieFavoriteUseCase.invoke(
+            params = DeleteMovieFavoriteUseCase.Params(
+              movie = event.movie
+            )
+          ).collectLatest { result ->
+            when (result) {
+              is ResultData.Success -> {
+                uiState = uiState.copy(iconColor = Color.White)
+              }
 
-                            is ResultData.Failure -> {
-                                UtilFunctions.logError("DETAIL", "Erro ao cadastrar filme")
-                            }
+              is ResultData.Failure -> {
+                UtilFunctions.logError("DETAIL", "Um erro ocorreu!")
+              }
 
-                            is ResultData.Loading -> {
+              is ResultData.Loading -> {
 
-                            }
-                        }
-                    }
-                }
+              }
             }
-
-            is MovieDetailEvent.CheckedFavorite -> {
-                viewModelScope.launch {
-                    isMovieFavoriteUseCase.invoke(
-                        params = IsMovieFavoriteUseCase.Params(
-                            movieId = event.movieId
-                        )
-                    ).collectLatest { result ->
-                        when (result) {
-                            is ResultData.Success -> {
-                                uiState = if (result.data == true) {
-                                    uiState.copy(iconColor = Color.Red)
-                                } else {
-                                    uiState.copy(iconColor = Color.White)
-                                }
-                            }
-
-                            is ResultData.Failure -> {
-                                UtilFunctions.logError("DETAIL", "Um erro ocorreu!")
-                            }
-
-                            is ResultData.Loading -> {
-
-                            }
-                        }
-                    }
-                }
-            }
-
-            is MovieDetailEvent.RemoveFavorite -> {
-                viewModelScope.launch {
-                    deleteMovieFavoriteUseCase.invoke(
-                        params = DeleteMovieFavoriteUseCase.Params(
-                            movie = event.movie
-                        )
-                    ).collectLatest { result ->
-                        when (result) {
-                            is ResultData.Success -> {
-                                uiState = uiState.copy(iconColor = Color.White)
-                            }
-
-                            is ResultData.Failure -> {
-                                UtilFunctions.logError("DETAIL", "Um erro ocorreu!")
-                            }
-
-                            is ResultData.Loading -> {
-
-                            }
-                        }
-                    }
-                }
-            }
-
-            is MovieDetailEvent.GetMovieDetail -> {
-                viewModelScope.launch {
-                    getMovieDetailsUseCase.invoke(
-                        params = GetMovieDetailsUseCase.Params(
-                            movieId = event.movieId
-                        )
-                    ).collect { resultData ->
-                        when (resultData) {
-                            is ResultData.Success -> {
-                                uiState = uiState.copy(
-                                    isLoading = false,
-                                    movieDetails = resultData.data?.second,
-                                    results = resultData.data?.first ?: emptyFlow()
-                                )
-                            }
-
-                            is ResultData.Failure -> {
-                                uiState = uiState.copy(
-                                    isLoading = false,
-                                    error = resultData.e?.message.toString()
-                                )
-                                UtilFunctions.logError(
-                                    "DETAIL-ERROR",
-                                    resultData.e?.message.toString()
-                                )
-                            }
-
-                            is ResultData.Loading -> {
-                                uiState = uiState.copy(
-                                    isLoading = true
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
+
+      is MovieDetailEvent.GetMovieDetail -> {
+        viewModelScope.launch {
+          getMovieDetailsUseCase.invoke(
+            params = GetMovieDetailsUseCase.Params(
+              movieId = event.movieId
+            )
+          ).collect { resultData ->
+            when (resultData) {
+              is ResultData.Success -> {
+                uiState = uiState.copy(
+                  isLoading = false,
+                  movieDetails = resultData.data?.second,
+                  results = resultData.data?.first ?: emptyFlow()
+                )
+              }
+
+              is ResultData.Failure -> {
+                uiState = uiState.copy(
+                  isLoading = false,
+                  error = resultData.e?.message.toString()
+                )
+                UtilFunctions.logError(
+                  "DETAIL-ERROR",
+                  resultData.e?.message.toString()
+                )
+              }
+
+              is ResultData.Loading -> {
+                uiState = uiState.copy(
+                  isLoading = true
+                )
+              }
+            }
+          }
+        }
+      }
     }
+  }
 }
