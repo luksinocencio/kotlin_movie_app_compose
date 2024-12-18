@@ -17,7 +17,6 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import java.lang.RuntimeException
 
-
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class MoviePopularViewModelTest {
