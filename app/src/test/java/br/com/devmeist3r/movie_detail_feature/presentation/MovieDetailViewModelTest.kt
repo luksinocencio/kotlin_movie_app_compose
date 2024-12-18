@@ -133,4 +133,30 @@ class MovieDetailViewModelTest {
     val iconColor = viewModel.uiState.iconColor
     assertThat(Color.White).isEqualTo(iconColor)
   }
+
+  @Test
+  fun `must notify uiState with filled favorite icon when current icon is unchecked`() = runTest {
+    // Given
+    whenever(addMovieFavoriteUseCase.invoke(any()))
+      .thenReturn(flowOf(ResultData.Success(Unit)))
+
+    whenever(isFavoriteMovieUseCase.invoke(any()))
+      .thenReturn(flowOf(ResultData.Success(false)))
+
+    val addArgumentCaptor = argumentCaptor<AddMovieFavoriteUseCase.Params>()
+    val checkedArgumentCaptor = argumentCaptor<IsMovieFavoriteUseCase.Params>()
+
+    // When
+    viewModel.onAddFavorite(movie = movie)
+
+    // Then
+    verify(addMovieFavoriteUseCase).invoke(addArgumentCaptor.capture())
+    assertThat(movie).isEqualTo(addArgumentCaptor.firstValue.movie)
+
+    verify(isFavoriteMovieUseCase).invoke(checkedArgumentCaptor.capture())
+    assertThat(movie.id).isEqualTo(checkedArgumentCaptor.firstValue.movieId)
+
+    val iconColor = viewModel.uiState.iconColor
+    assertThat(Color.Red).isEqualTo(iconColor)
+  }
 }
