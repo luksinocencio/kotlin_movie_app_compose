@@ -9,37 +9,33 @@ import okio.IOException
 import retrofit2.HttpException
 
 class MoviePagingSource(
-    private val remoteDataSource: MoviePopularRemoteDataSource
+  private val remoteDataSource: MoviePopularRemoteDataSource
 ) : PagingSource<Int, Movie>() {
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
-        return state.anchorPosition?.let {
-            val anchorPage = state.closestPageToPosition(it)
-            anchorPage?.prevKey?.plus(LIMIT) ?: anchorPage?.nextKey?.minus(LIMIT)
-        }
+  override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+    return state.anchorPosition?.let {
+      val anchorPage = state.closestPageToPosition(it)
+      anchorPage?.prevKey?.plus(LIMIT) ?: anchorPage?.nextKey?.minus(LIMIT)
     }
+  }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
-        return try {
-            val pageNumber = params.key ?: 1
-            val moviePaging = remoteDataSource.getPopularMovies(page = pageNumber)
-            val movies = moviePaging.movies
-            val totalPages = moviePaging.totalPages
+  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
+    return try {
+      val pageNumber = params.key ?: 1
+      val moviePaging = remoteDataSource.getPopularMovies(page = pageNumber)
+      val movies = moviePaging.movies
+      val totalPages = moviePaging.totalPages
 
-            LoadResult.Page(
-                data = movies,
-                prevKey = if (pageNumber == 1) null else pageNumber - 1,
-                nextKey = if (pageNumber == totalPages) null else pageNumber + 1
-            )
-        } catch (exception: IOException) {
-            exception.printStackTrace()
-            return LoadResult.Error(exception)
-        } catch (exception: HttpException) {
-            exception.printStackTrace()
-            return LoadResult.Error(exception)
-        }
+      LoadResult.Page(
+        data = movies,
+        prevKey = if (pageNumber == 1) null else pageNumber - 1,
+        nextKey = if (pageNumber == totalPages) null else pageNumber + 1
+      )
+    } catch (exception: Exception) {
+      LoadResult.Error(exception)
     }
+  }
 
-    companion object {
-        private const val LIMIT = 20
-    }
+  companion object {
+    private const val LIMIT = 20
+  }
 }
