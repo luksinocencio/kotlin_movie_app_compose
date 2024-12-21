@@ -3,9 +3,11 @@ package br.com.devmeist3r.movie_detail_feature.data.source
 import br.com.devmeist3r.core.data.remote.MovieService
 import br.com.devmeist3r.core.data.remote.response.MovieResponse
 import br.com.devmeist3r.core.domain.model.MovieDetails
+import br.com.devmeist3r.core.domain.model.MoviePaging
 import br.com.devmeist3r.core.paging.MovieSimilarPagingSource
 import br.com.devmeist3r.core.util.toBackdropUrl
 import br.com.devmeist3r.movie_detail_feature.domain.source.MovieDetailsRemoteDataSource
+import br.com.devmeist3r.movie_popular_feature.data.mapper.toMovie
 import javax.inject.Inject
 
 class MovieDetailsRemoteDataSourceImpl @Inject constructor(
@@ -27,8 +29,15 @@ class MovieDetailsRemoteDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getMoviesSimilar(page: Int, movieId: Int): MovieResponse {
-        return service.getMoviesSimilar(page = page, movieId = movieId)
+    override suspend fun getMoviesSimilar(page: Int, movieId: Int): MoviePaging {
+      val response = service.getMoviesSimilar(page = page, movieId = movieId)
+
+      return MoviePaging(
+        page = response.page,
+        totalPages = response.totalPages,
+        totalResults = response.totalResults,
+        movies = response.results.map { it.toMovie() }
+      )
     }
 
     override fun getSimilarMoviesPagingSource(movieId: Int): MovieSimilarPagingSource {
