@@ -10,17 +10,21 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 interface DeleteMovieFavoriteUseCase {
-    suspend fun invoke(params: Params): Flow<ResultData<Unit>>
-    data class Params(val movie: Movie)
+  suspend fun invoke(params: Params): Flow<ResultData<Unit>>
+  data class Params(val movie: Movie)
 }
 
 class DeleteMovieFavoriteUseCaseImpl @Inject constructor(
-    private val movieFavoriteRepository: MovieFavoriteRepository
+  private val movieFavoriteRepository: MovieFavoriteRepository
 ) : DeleteMovieFavoriteUseCase {
-    override suspend fun invoke(params: DeleteMovieFavoriteUseCase.Params): Flow<ResultData<Unit>> {
-        return flow {
-            val insert = movieFavoriteRepository.delete(params.movie)
-            emit(ResultData.Success(insert))
-        }.flowOn(Dispatchers.IO)
-    }
+  override suspend fun invoke(params: DeleteMovieFavoriteUseCase.Params): Flow<ResultData<Unit>> {
+    return flow {
+      try {
+        val insert = movieFavoriteRepository.delete(params.movie)
+        emit(ResultData.Success(insert))
+      } catch (e: Exception) {
+        emit(ResultData.Failure(e))
+      }
+    }.flowOn(Dispatchers.IO)
+  }
 }
