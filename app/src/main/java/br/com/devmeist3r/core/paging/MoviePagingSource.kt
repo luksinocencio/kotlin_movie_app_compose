@@ -3,10 +3,7 @@ package br.com.devmeist3r.core.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import br.com.devmeist3r.core.domain.model.Movie
-import br.com.devmeist3r.movie_popular_feature.data.mapper.toMovie
 import br.com.devmeist3r.movie_popular_feature.domain.source.MoviePopularRemoteDataSource
-import okio.IOException
-import retrofit2.HttpException
 
 class MoviePagingSource(
   private val remoteDataSource: MoviePopularRemoteDataSource

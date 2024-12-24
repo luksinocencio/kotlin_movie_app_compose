@@ -1,14 +1,9 @@
 package br.com.devmeist3r.core.paging
 
 import androidx.paging.PagingSource
-import androidx.paging.PagingSource.LoadResult.*
 import androidx.paging.PagingState
 import br.com.devmeist3r.core.domain.model.MovieSearch
-import br.com.devmeist3r.movie_popular_feature.data.mapper.toMovie
-import br.com.devmeist3r.search_movie_feature.data.mapper.toMovieSearch
 import br.com.devmeist3r.search_movie_feature.domain.source.MovieSearchRemoteDataSource
-import okio.IOException
-import retrofit2.HttpException
 
 
 class MovieSearchPagingSource(
