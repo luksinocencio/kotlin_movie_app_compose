@@ -3,7 +3,7 @@ package br.com.devmeist3r.search_movie_feature.presentation
 import androidx.paging.PagingData
 import br.com.devmeist3r.TestDispatcherRule
 import br.com.devmeist3r.core.domain.model.MovieSearchFactory
-import br.com.devmeist3r.search_movie_feature.domain.usecase.GetMoviesSearchUseCase
+import br.com.devmeist3r.search_movie_feature.domain.usecase.GetMovieSearchUseCase
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
@@ -25,7 +25,7 @@ class MovieSearchViewModelTest {
   val dispatcherRule = TestDispatcherRule()
 
   @Mock
-  lateinit var getSearchMoviesUseCase: GetMoviesSearchUseCase
+  lateinit var getSearchMoviesUseCase: GetMovieSearchUseCase
 
   private val viewModel by lazy {
     MovieSearchViewModel(getSearchMoviesUseCase)

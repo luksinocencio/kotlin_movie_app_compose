@@ -5,8 +5,8 @@ import br.com.devmeist3r.search_movie_feature.data.repository.MovieSearchReposit
 import br.com.devmeist3r.search_movie_feature.data.source.MovieSearchRemoteDataSourceImpl
 import br.com.devmeist3r.search_movie_feature.domain.repository.MovieSearchRepository
 import br.com.devmeist3r.search_movie_feature.domain.source.MovieSearchRemoteDataSource
-import br.com.devmeist3r.search_movie_feature.domain.usecase.GetMoviesSearchUseCase
-import br.com.devmeist3r.search_movie_feature.domain.usecase.GetMoviesSearchUseCaseImpl
+import br.com.devmeist3r.search_movie_feature.domain.usecase.GetMovieSearchUseCase
+import br.com.devmeist3r.search_movie_feature.domain.usecase.GetMovieSearchUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,7 +30,7 @@ object MovieSearchFeatureModule {
 
     @Provides
     @Singleton
-    fun provideGetMovieSearchUseCase(repository: MovieSearchRepository): GetMoviesSearchUseCase {
-        return GetMoviesSearchUseCaseImpl(repository = repository)
+    fun provideGetMovieSearchUseCase(repository: MovieSearchRepository): GetMovieSearchUseCase {
+        return GetMovieSearchUseCaseImpl(repository = repository)
     }
 }
