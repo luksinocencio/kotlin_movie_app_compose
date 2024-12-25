@@ -5,6 +5,7 @@ import br.com.devmeist3r.TestDispatcherRule
 import br.com.devmeist3r.core.domain.model.MovieFactory
 import br.com.devmeist3r.movie_popular_feature.domain.usecase.GetPopularMoviesUseCase
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -15,7 +16,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.lang.RuntimeException
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -40,7 +40,9 @@ class MoviePopularViewModelTest {
   @Test
   fun `must validate paging data object values when calling paging data from movies`() = runTest {
     // Given
-    whenever(getPopularMoviesUseCase.invoke()).thenReturn(
+    whenever(
+      getPopularMoviesUseCase.invoke(any())
+    ).thenReturn(
       flowOf(fakePagingDataMovies)
     )
 
@@ -54,7 +56,9 @@ class MoviePopularViewModelTest {
   @Test(expected = RuntimeException::class)
   fun `must throw an exception when the calling to the use case returns an exception`() = runTest {
     // Given
-    whenever(getPopularMoviesUseCase.invoke())
+    whenever(
+      getPopularMoviesUseCase.invoke(any())
+    )
       .thenThrow(RuntimeException())
 
     // When

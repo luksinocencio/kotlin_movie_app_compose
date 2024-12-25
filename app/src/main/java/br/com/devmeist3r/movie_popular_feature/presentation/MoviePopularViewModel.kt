@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import br.com.devmeist3r.movie_popular_feature.domain.usecase.GetPopularMoviesUseCase
 import br.com.devmeist3r.movie_popular_feature.presentation.state.MoviePopularState
@@ -13,14 +14,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviePopularViewModel @Inject constructor(
-    getPopularMoviesUseCase: GetPopularMoviesUseCase
-): ViewModel() {
-    var uiState by mutableStateOf(MoviePopularState())
-        private set
+  getPopularMoviesUseCase: GetPopularMoviesUseCase
+) : ViewModel() {
+  var uiState by mutableStateOf(MoviePopularState())
+    private set
 
-    init {
-        val movies = getPopularMoviesUseCase.invoke()
-            .cachedIn(viewModelScope)
-        uiState = uiState.copy(movies = movies)
-    }
+  init {
+    val movies = getPopularMoviesUseCase.invoke(
+      params = GetPopularMoviesUseCase.Params(
+        pagingConfig = pagingConfig()
+      )
+    )
+      .cachedIn(viewModelScope)
+    uiState = uiState.copy(movies = movies)
+  }
+
+  private fun pagingConfig(): PagingConfig {
+    return PagingConfig(
+      pageSize = 20,
+      initialLoadSize = 20
+    )
+  }
 }
